@@ -1,7 +1,7 @@
 FROM tekintian/php:5.5
 MAINTAINER Tekin Tian <tekintian@gmail.com>
 
-ENV NGINX_INSTALL_DIR=/usr/local/tengine \
+ENV NGINX_INSTALL_DIR=/usr/local/nginx \
     NGINX_VERSION=1.13.9 \
     PCRE_VERSION=8.41 \
     OPENSSL_VERSION=1.0.2n \
@@ -12,7 +12,7 @@ ENV NGINX_INSTALL_DIR=/usr/local/tengine \
 
 WORKDIR /tmp
 
-# install tengine
+# install nginx
 RUN wget -c --no-check-certificate ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-${PCRE_VERSION}.tar.gz && \
     wget -c --no-check-certificate https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz && \
     wget -c --no-check-certificate http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz && \
@@ -20,8 +20,8 @@ RUN wget -c --no-check-certificate ftp://ftp.csx.cam.ac.uk/pub/software/programm
     tar xzf openssl-${OPENSSL_VERSION}.tar.gz && \
     tar xzf nginx-${NGINX_VERSION}.tar.gz && \
     cd nginx-${NGINX_VERSION} && \
-    # Modify Tengine version
-    #sed -i 's@TENGINE "/" NGINX_VERSION@"nginx/unknown"@' src/core/nginx.h && \
+    # Modify nginx version
+    #sed -i 's@nginx "/" NGINX_VERSION@"nginx/unknown"@' src/core/nginx.h && \
     # close debug
     sed -i 's@CFLAGS="$CFLAGS -g"@#CFLAGS="$CFLAGS -g"@' auto/cc/gcc && \
     ./configure \

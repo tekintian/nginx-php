@@ -1,7 +1,7 @@
 FROM tekintian/php:7.1.15
 MAINTAINER Tekin Tian <tekintian@gmail.com>
 
-ENV NGINX_INSTALL_DIR=/usr/local/tengine \
+ENV NGINX_INSTALL_DIR=/usr/local/nginx \
     NGINX_VERSION=1.13.9 \
     PCRE_VERSION=8.41 \
     OPENSSL_VERSION=1.1.0g \
@@ -14,7 +14,7 @@ WORKDIR /tmp
 #
 #最新稳定版本openssl 
 # https://www.openssl.org/source/openssl-1.1.0g.tar.gz
-#tengine http://tengine.taobao.org/download.html
+#nginx http://nginx.taobao.org/download.html
 #pcre  ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre
 
 RUN wget -c --no-check-certificate ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-${PCRE_VERSION}.tar.gz && \
@@ -24,7 +24,7 @@ RUN wget -c --no-check-certificate ftp://ftp.csx.cam.ac.uk/pub/software/programm
     tar xzf pcre-${PCRE_VERSION}.tar.gz && \
     tar xzf openssl-${OPENSSL_VERSION}.tar.gz && \
     tar xzf nginx-${NGINX_VERSION}.tar.gz && \
-# install tengine
+# install nginx
     cd nginx-${NGINX_VERSION} && \
     sed -i 's@CFLAGS="$CFLAGS -g"@#CFLAGS="$CFLAGS -g"@' auto/cc/gcc && \
     ./configure \

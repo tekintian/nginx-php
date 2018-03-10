@@ -1,4 +1,4 @@
-# nginx-php for docker , tengine + php5.4, php5.5, php5.6, php7.0, php7.1, php7.2 docker container
+# nginx-php for docker , nginx + php5.4, php5.5, php5.6, php7.0, php7.1, php7.2 docker container
 # php latest version
 docker pull tekintian/nginx-php
 
@@ -20,13 +20,13 @@ docker pull tekintian/nginx-php:5.6.34
   nginx-2.2.2  php-5.6.34, php-7.0.28, php-7.1.15, php-2.2.3
   last update 2018年03月10日09:32:46
 
-  Tengine(Nginx) + php5.4, php5.5, php5.6, php7.0, php7.1, php7.2
-  Tengine+ LuaJIT waf security module, IPV6, http2, OPENSSL 
+  nginx(Nginx) + php5.4, php5.5, php5.6, php7.0, php7.1, php7.2
+  nginx+ LuaJIT waf security module, IPV6, http2, OPENSSL 
   sphinx  + Memcached [Memcache]+ Redis + Swoole + Workman
    ImageMagick + ZendOpcache
   ZendGuardLoader + ionCube <php5.6 
 
-## Tengine/nginx control
+## nginx/nginx control
 start|stop|status|restart|reload|configtest
 
 docker exec -d web service nginx restart
@@ -38,22 +38,22 @@ docker exec -d web service php-fpm restart
 
 # 使用示例
 
-## 使用默认配置独立运行Tengine+php
+## 使用默认配置独立运行nginx+php
 
 1. 自定义配置运行命令
 
   docker run  -d -it \
-  --name tengine  \
+  --name nginx  \
   --restart=always \
   -p 80:80 \
   -p 443:443 \
-  -v /home/opt/nginx-php/vhost:/usr/local/tengine/conf/vhost  \
+  -v /home/opt/nginx-php/vhost:/usr/local/nginx/conf/vhost  \
   -v /home/wwwroot:/home/wwwroot  \
   -v /home/wwwlogs:/home/wwwlogs \
   tekintian/nginx-php:latest
 
 2. 简洁运行命令{just for test}：
-  docker run -d -it --name tengine -p 80:80 -p 443:443 tekintian/nginx-php
+  docker run -d -it --name nginx -p 80:80 -p 443:443 tekintian/nginx-php
 
 
 ### 文件夹说明
@@ -67,7 +67,7 @@ docker exec -d web service php-fpm restart
    分号左边为本地端口，右边为容器的端口
 
   ** -v Volume映射 **
-    -v /home/xxx:/usr/local/tengine/conf
+    -v /home/xxx:/usr/local/nginx/conf
     在分号 : 左边的 /home/xxx为你本地主机的路径{可随意修改}，分号右边的的为容器的路径{不可修改}
 
 
@@ -75,9 +75,9 @@ docker exec -d web service php-fpm restart
 
 # 与其他容器链接运行
 
-** PS: 如果与其他容器链接运行，则必须先启动需要链接的容器后才能启动tengine ** 
+** PS: 如果与其他容器链接运行，则必须先启动需要链接的容器后才能启动nginx ** 
 
-## tengine + alisql + redis + memcached
+## nginx + alisql + redis + memcached
 
 # alisql
 
@@ -122,18 +122,18 @@ This would set the memcache server to use 64 megabytes for storage.
 
 https://hub.docker.com/_/memcache/
 
-# tengine
+# nginx
 ***
 
   docker run  -d -it \
-  --name tengine  \
+  --name nginx  \
   --link myalisql:mysql  \
   --link mymemcache:memcache \
   --link myredis:redis \
   --restart=always \
   -p 80:80 \
   -p 443:443 \
-  -v /home/opt/tengine_conf:/usr/local/tengine/conf  \
+  -v /home/opt/nginx_conf:/usr/local/nginx/conf  \
   -v /home/opt/php72_etc:/usr/local/php/etc  \
   -v /home/opt/php72_log/var:/usr/local/php/var/log \
   -v /home/wwwroot:/home/wwwroot  \
@@ -152,8 +152,8 @@ https://hub.docker.com/_/memcache/
   ---- | --- | --- 
   /home/wwwroot | /home/wwwroot | 读写
   /home/wwwlogs | /home/wwwlogs | 读写
-  /home/opt/tengine/php_etc | /usr/local/php/etc  | 读写
-  /home/opt/tengine/conf | /usr/local/tengine/conf | 读写
+  /home/opt/nginx/php_etc | /usr/local/php/etc  | 读写
+  /home/opt/nginx/conf | /usr/local/nginx/conf | 读写
 
 
 默认配置文件见 

@@ -1,6 +1,6 @@
-RulePath = "/usr/local/tengine/conf/waf/wafconf/"
+RulePath = "/usr/local/nginx/conf/waf/wafconf/"
 attacklog = "on"
-logdir = "/usr/local/tengine/logs/hack/"
+logdir = "/usr/local/nginx/logs/hack/"
 UrlDeny="on"
 Redirect="on"
 CookieMatch="on"
