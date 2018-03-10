@@ -1,4 +1,7 @@
 # nginx-php for docker , nginx + php5.4, php5.5, php5.6, php7.0, php7.1, php7.2 docker container
+
+docker run -it -d --name nginx -p 86:80 -v /Users/Github/nginx-php/src:/home/src tekintian/nginx-php:7.2
+
 # php latest version
 docker pull tekintian/nginx-php
 
