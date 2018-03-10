@@ -49,30 +49,29 @@ RUN wget -c --no-check-certificate http://luajit.org/download/LuaJIT-$LuaJIT_VER
     tar xzf openssl-${OPENSSL_VERSION}.tar.gz && \
     tar xzf lua-nginx-module-${LNM_VERSION}.tar.gz && \
     tar xzf ngx_devel_kit-${NDK_VERSION}.tar.gz && \
-    tar xzf nginx-${NGINX_VERSION}.tar.gz && \
+    tar xzf nginx-${NGINX_VERSION}.tar.gz 
 # install nginx
-    cd nginx-${NGINX_VERSION} && \
+ RUN  cd nginx-${NGINX_VERSION} && \
     sed -i 's@CFLAGS="$CFLAGS -g"@#CFLAGS="$CFLAGS -g"@' auto/cc/gcc && \
     ./configure \
         --prefix=${NGINX_INSTALL_DIR} \
         --user=${RUN_USER} --group=${RUN_USER} \
-        --add-module=/tmp/ngx_devel_kit-${NDK_VERSION} \
-        --add-module=/tmp/lua-nginx-module-${LNM_VERSION} \
         --with-http_v2_module \
         --with-http_ssl_module \
         --with-ipv6 \
         --with-http_gzip_static_module \
+        --with-http_stub_status_module  \
         --with-http_realip_module \
         --with-http_flv_module \
         --with-http_mp4_module \
         --with-openssl=/tmp/openssl-${OPENSSL_VERSION} \
         --with-pcre=/tmp/pcre-${PCRE_VERSION} \
         --with-pcre-jit \
-       # --with-http_lua_module  \
-        --with-luajit-lib=/usr/local/luajit/lib/  \
-        --with-luajit-inc=/usr/local/luajit/include/luajit-2.0/  \
-        --with-ld-opt=-Wl,-rpath,/usr/local/luajit/lib  \
         --with-ld-opt='-ljemalloc' && \
+        --with-cc-opt=-O2 \
+        --with-ld-opt='-Wl,-rpath,/usr/local/lib' \
+        --add-module=/tmp/ngx_devel_kit-${NDK_VERSION} \
+        --add-module=/tmp/lua-nginx-module-${LNM_VERSION} \
     make && make install && \
     mkdir -p ${NGINX_INSTALL_DIR}/conf/rewrite && \
     mkdir -p ${NGINX_INSTALL_DIR}/logs/hack && \
