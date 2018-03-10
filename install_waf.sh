@@ -1,4 +1,11 @@
 #!/bin/bash
+#For waf install
+
+mkdir -p ${WWWROOT_DIR}/default ${WWWLOGS_DIR}
+[ -d /home ] && chmod 755 /home
+echo "Hello World! IT's running with PHP ${PHP_VERSION}! <hr> <br> <a href='/luatest'>LUA test</a> <br> <a href='/adminer.php'>Adminer</a> <br> <a href='/tz.php'>tz</a>" > /${WWWROOT_DIR}/default/index.html
+echo "<?php phpinfo();" > /${WWWROOT_DIR}/default/phpinfo.php
+
 
 [ -z "`grep ^'export PATH=' /etc/profile`" ] && echo "export PATH=$NGINX_INSTALL_DIR/sbin:\$PATH" >> /etc/profile
 [ -n "`grep ^'export PATH=' /etc/profile`" -a -z "`grep $NGINX_INSTALL_DIR /etc/profile`" ] && sed -i "s@^export PATH=\(.*\)@export PATH=$NGINX_INSTALL_DIR/sbin:\1@" /etc/profile
@@ -58,8 +65,3 @@ $WWWLOGS_DIR/*nginx.log {
   endscript
 }
 EOF
-
-mkdir -p ${WWWROOT_DIR}/default ${WWWLOGS_DIR}
-[ -d /home ] && chmod 755 /home
-echo "Hello World! IT's running with PHP ${PHP_VERSION}! <hr> <br> <a href='/luatest'>LUA test</a> <br> <a href='/adminer.php'>Adminer</a> <br> <a href='/tz.php'>tz</a>" > /${WWWROOT_DIR}/default/index.html
-echo "<?php phpinfo();" > /${WWWROOT_DIR}/default/phpinfo.php

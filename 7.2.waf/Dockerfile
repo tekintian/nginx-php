@@ -85,7 +85,7 @@ ADD ${NGINX_PHP_SRC_PATH}/nginx-init /etc/init.d/nginx
 RUN sed -i "s@worker_connections 51200;@worker_connections 51200;\n    reuse_port on;@" ${NGINX_INSTALL_DIR}/conf/nginx.conf && \
     sed -i "s@^worker_processes.*@worker_processes auto;\nworker_cpu_affinity auto;\ndso {\n\tload ngx_http_concat_module.so;\n\tload ngx_http_sysguard_module.so;\n}@" ${NGINX_INSTALL_DIR}/conf/nginx.conf
 
-# run install script
+# run waf install script
 ADD ${NGINX_PHP_SRC_PATH}/install_waf.sh /tmp/install_waf.sh
 RUN chmod 777 install_waf.sh && \
     bash install_waf.sh && \
@@ -93,9 +93,6 @@ RUN chmod 777 install_waf.sh && \
 
 # ending
 WORKDIR ${WWWROOT_DIR}
-RUN mkdir -p ${WWWLOGS_DIR} && \
-    mkdir -p ${WWWROOT_DIR}/default && \
-    echo "<?php phpinfo();" > /${WWWROOT_DIR}/default/index.php
 
 # expose port
 EXPOSE 80 443
