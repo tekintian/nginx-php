@@ -5,13 +5,13 @@
 
 wget -c --no-check-certificate ${NGINX_PHP_SRC_PATH}/nginx-init && mv -f nginx-init /etc/init.d/nginx
 #wget -c --no-check-certificate ${NGINX_PHP_SRC_PATH}/nginx_waf.conf && mv -f nginx_waf.conf ${NGINX_INSTALL_DIR}/conf/nginx.conf
-wget -c --no-check-certificate ${NGINX_PHP_SRC_PATH}/src/tz.php && mv -f tz.php ${WWWROOT_DIR}/default/tz.php
-wget -c --no-check-certificate ${NGINX_PHP_SRC_PATH}/src/adminer.php && mv -f adminer.php ${WWWROOT_DIR}/default/adminer.php
+wget -c --no-check-certificate -P ${WWWROOT_DIR}/default/ ${NGINX_PHP_SRC_PATH}/src/tz.php
+wget -c --no-check-certificate -P ${WWWROOT_DIR}/default/ ${NGINX_PHP_SRC_PATH}/src/adminer.php
 wget -c --no-check-certificate ${NGINX_PHP_SRC_PATH}/rewrite.tar.gz && tar -zxvf rewrite.tar.gz
 mv -f rewrite ${NGINX_INSTALL_DIR}/conf/ && unlink rewrite.tar.gz
 
-wget -c --no-check-certificate ${NGINX_PHP_SRC_PATH}/src/waf.zip && unzip waf.zip
-mv -f waf ${NGINX_INSTALL_DIR}/conf/ && unlink waf.zip
+wget -c --no-check-certificate ${NGINX_PHP_SRC_PATH}/src/waf.tar.gz && tar -zxvf waf.tar.gz
+mv -f waf/ ${NGINX_INSTALL_DIR}/conf/ && unlink waf.tar.gz
 
 mkdir -p ${NGINX_INSTALL_DIR}/conf/vhost
 chown -R root:staff ${NGINX_INSTALL_DIR}/conf/
