@@ -65,8 +65,6 @@ RUN wget -c --no-check-certificate http://luajit.org/download/LuaJIT-$LuaJIT_VER
         --with-http_realip_module \
         --with-http_flv_module \
         --with-http_mp4_module \
-        --with-http_concat_module=shared \
-        --with-http_sysguard_module=shared \
         --with-openssl=/tmp/openssl-${OPENSSL_VERSION} \
         --with-pcre=/tmp/pcre-${PCRE_VERSION} \
         --with-pcre-jit \
@@ -74,7 +72,7 @@ RUN wget -c --no-check-certificate http://luajit.org/download/LuaJIT-$LuaJIT_VER
         --with-luajit-lib=/usr/local/luajit/lib/  \
         --with-luajit-inc=/usr/local/luajit/include/luajit-2.0/  \
         --with-ld-opt=-Wl,-rpath,/usr/local/luajit/lib  \
-        --with-jemalloc && \
+        --with-ld-opt='-ljemalloc' && \
     make && make install && \
     mkdir -p ${NGINX_INSTALL_DIR}/conf/rewrite && \
     mkdir -p ${NGINX_INSTALL_DIR}/logs/hack && \
