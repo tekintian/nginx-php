@@ -8,7 +8,7 @@ ENV NGINX_INSTALL_DIR=/usr/local/nginx \
     RUN_USER=www \
     WWWROOT_DIR=/home/wwwroot \
     WWWLOGS_DIR=/home/wwwlogs \
-    NGINX_PHP_SRC_PATH=https://github.com/tekintian/nginx-php/raw/master
+    REMOTE_SRC_PATH=https://github.com/tekintian/nginx-php/raw/master
 
 WORKDIR /tmp
 
@@ -20,7 +20,7 @@ RUN apt-get install -y  bzip2 && \
     ./configure --prefix=/usr/local/jemalloc --libdir=/usr/local/lib && \
     make && make install && \
     make clean && \
-    cd ../ && \
+    cd /tmp/ && \
     echo "/usr/local/lib" > /etc/ld.so.conf.d/usr_local_lib.conf && \
     /sbin/ldconfig 
 
@@ -61,7 +61,7 @@ ADD nginx-init /etc/init.d/nginx
 RUN sed -i "s@^worker_processes.*@worker_processes auto;\nworker_cpu_affinity auto;\n@" ${NGINX_INSTALL_DIR}/conf/nginx.conf
 
 # run install script
-ADD ${NGINX_PHP_SRC_PATH}/install.sh /tmp/install.sh
+ADD ${REMOTE_SRC_PATH}/install.sh /tmp/install.sh
 RUN chmod 777 install.sh && \
     bash install.sh && \
     rm -rf /tmp/*

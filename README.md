@@ -1,12 +1,11 @@
 # nginx-php for docker , nginx + php5.4, php5.5, php5.6, php7.0, php7.1, php7.2 docker container
 
-docker run -it -d --name nginxwaf -p 87:80 -v /Users/Github/nginx-php/nginx_waf.conf:/usr/local/nginx/conf/nginx.conf -v /Users/Github/nginx-php/src:/home/src tekintian/nginx-php:7.2.waf
+docker run -it -d --name mywaf -p 83:80  -v /Users/Github/tengine-php/src:/home/src tekintian/tengine-php:7.2.waf
 
 
 docker run -it -d --name nginx -p 87:80 -v /Users/Github/nginx-php/nginx_waf.conf:/usr/local/nginx/conf/nginx.conf -v /Users/Github/nginx-php/src:/home/src nginx:7.2waf
 
 docker run -it -d --name nginx -p 87:80 -v /Users/Github/nginx-php/src:/home/src nginx:7.2waf
-
 
 docker run -it -d --name tenginewaf -p 82:80  -v /Users/Github/tengine-php/src:/home/src tekintian/tengine-php:7.2.3.waf
 

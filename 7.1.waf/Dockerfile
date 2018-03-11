@@ -11,16 +11,17 @@ ENV NGINX_INSTALL_DIR=/usr/local/nginx \
     RUN_USER=www \
     WWWROOT_DIR=/home/wwwroot \
     WWWLOGS_DIR=/home/wwwlogs \
-    NGINX_PHP_SRC_PATH=https://github.com/tekintian/nginx-php/raw/master
+    REMOTE_SRC_PATH=https://github.com/tekintian/nginx-php/raw/master
 
 WORKDIR /tmp
-
-RUN wget -c --no-check-certificate http://luajit.org/download/LuaJIT-$LuaJIT_VERSION.tar.gz && \
+#install build deps
+RUN  apt-get update && apt-get install -y gcc g++ make cmake autoconf libssl-dev  libcurl4-openssl-dev libxslt-dev libicu-dev  libxml2-dev libjpeg-dev libpng-dev libfreetype6-dev libsasl2-dev libevent-dev libpcre3-dev libgpgme11-dev pkg-config patch && rm -rf /var/lib/apt/lists/* && \
+    wget -c --no-check-certificate http://luajit.org/download/LuaJIT-$LuaJIT_VERSION.tar.gz && \
     tar xzf LuaJIT-$LuaJIT_VERSION.tar.gz && \
     cd LuaJIT-$LuaJIT_VERSION && make && \
     make install PREFIX=/usr/local/luajit && \
     export LUAJIT_LIB=/usr/local/luajit/lib && export LUAJIT_INC=/usr/local/luajit/include/luajit-2.0  && echo "/usr/local/luajit/lib" >> /etc/ld.so.conf && ldconfig && \
-    cd ../ && \
+    cd /tmp/ && \
 # download related src
     wget -c --no-check-certificate ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-${PCRE_VERSION}.tar.gz && \
     wget --no-check-certificate https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz && \
@@ -60,15 +61,17 @@ RUN wget -c --no-check-certificate http://luajit.org/download/LuaJIT-$LuaJIT_VER
     mkdir -p ${NGINX_INSTALL_DIR}/logs/hack && \
     #备份默认的配置文件
     cp -a ${NGINX_INSTALL_DIR}/conf/nginx.conf ${NGINX_INSTALL_DIR}/conf/nginx.conf.bak && \
-    rm -rf /tmp/*
+    cd /tmp/ && rm -rf /tmp/* && \
+#remove build deps
+    apt-get purge -y --auto-remove gcc g++ make cmake autoconf libssl-dev  libcurl4-openssl-dev libxslt-dev libicu-dev  libxml2-dev libjpeg-dev libpng-dev libfreetype6-dev libsasl2-dev libevent-dev  libpcre3-dev libgpgme11-dev pkg-config patch libgpgme11-dev
 
-ADD ${NGINX_PHP_SRC_PATH}/nginx_waf.conf ${NGINX_INSTALL_DIR}/conf/nginx.conf
-#ADD ${NGINX_PHP_SRC_PATH}/src/waf.zip ${NGINX_INSTALL_DIR}/conf/
-ADD ${NGINX_PHP_SRC_PATH}/nginx-init /etc/init.d/nginx
+ADD ${REMOTE_SRC_PATH}/nginx_waf.conf ${NGINX_INSTALL_DIR}/conf/nginx.conf
+#ADD ${REMOTE_SRC_PATH}/src/waf.zip ${NGINX_INSTALL_DIR}/conf/
+ADD ${REMOTE_SRC_PATH}/nginx-init /etc/init.d/nginx
 RUN sed -i "s@^worker_processes.*@worker_processes auto;\nworker_cpu_affinity auto;\n@" ${NGINX_INSTALL_DIR}/conf/nginx.conf
 
 # run waf install script
-ADD ${NGINX_PHP_SRC_PATH}/install_waf.sh /tmp/install_waf.sh
+ADD ${REMOTE_SRC_PATH}/install_waf.sh /tmp/install_waf.sh
 RUN chmod 777 install_waf.sh && \
     bash install_waf.sh && \
     rm -rf /tmp/*
@@ -80,7 +83,7 @@ WORKDIR ${WWWROOT_DIR}
 EXPOSE 80 443
 
 # Set the entrypoint script.
-ADD ${NGINX_PHP_SRC_PATH}/entrypoint.sh /entrypoint.sh
+ADD ${REMOTE_SRC_PATH}/entrypoint.sh /entrypoint.sh
 RUN chmod 777 /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 

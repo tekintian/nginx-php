@@ -1,21 +1,23 @@
 #!/bin/bash
+#
+NGINX_INSTALL_DIR=/usr/local/nginx
 
-[ -z "`grep ^'export PATH=' /etc/profile`" ] && echo "export PATH=$NGINX_INSTALL_DIR/sbin:\$PATH" >> /etc/profile
-[ -n "`grep ^'export PATH=' /etc/profile`" -a -z "`grep $NGINX_INSTALL_DIR /etc/profile`" ] && sed -i "s@^export PATH=\(.*\)@export PATH=$NGINX_INSTALL_DIR/sbin:\1@" /etc/profile
+[ -z "`grep ^'export PATH=' /etc/profile`" ] && echo "export PATH=${NGINX_INSTALL_DIR}/sbin:\$PATH" >> /etc/profile
+[ -n "`grep ^'export PATH=' /etc/profile`" -a -z "`grep ${NGINX_INSTALL_DIR} /etc/profile`" ] && sed -i "s@^export PATH=\(.*\)@export PATH=${NGINX_INSTALL_DIR}/sbin:\1@" /etc/profile
 
-wget -c --no-check-certificate ${NGINX_PHP_SRC_PATH}/nginx-init && mv -f nginx-init /etc/init.d/nginx
-wget -c --no-check-certificate ${NGINX_PHP_SRC_PATH}/nginx.conf && mv -f nginx.conf ${NGINX_INSTALL_DIR}/conf/nginx.conf
-wget -c --no-check-certificate ${NGINX_PHP_SRC_PATH}/rewrite.tar.gz && tar -zxvf rewrite.tar.gz
+wget -c --no-check-certificate ${REMOTE_SRC_PATH}/nginx-init && mv -f nginx-init /etc/init.d/nginx
+wget -c --no-check-certificate ${REMOTE_SRC_PATH}/nginx.conf && mv -f nginx.conf ${NGINX_INSTALL_DIR}/conf/nginx.conf
+wget -c --no-check-certificate ${REMOTE_SRC_PATH}/rewrite.tar.gz && tar -zxvf rewrite.tar.gz
 mv -f rewrite ${NGINX_INSTALL_DIR}/conf/ && unlink rewrite.tar.gz
 mkdir -p ${NGINX_INSTALL_DIR}/conf/vhost
 chown -R root:staff ${NGINX_INSTALL_DIR}/conf/
 
-sed -i "s@/usr/local/nginx@$NGINX_INSTALL_DIR@g" /etc/init.d/nginx
+sed -i "s@/usr/local/nginx@${NGINX_INSTALL_DIR}@g" /etc/init.d/nginx
 chmod +x /etc/init.d/nginx
 ldconfig
 
 # proxy.conf
-cat > $NGINX_INSTALL_DIR/conf/proxy.conf << EOF
+cat > ${NGINX_INSTALL_DIR}/conf/proxy.conf << EOF
 proxy_connect_timeout 300s;
 proxy_send_timeout 900;
 proxy_read_timeout 900;
@@ -32,9 +34,9 @@ proxy_set_header X-Real-IP \$remote_addr;
 proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
 EOF
 
-sed -i "s@/home/wwwroot/default@$WWWROOT_DIR/default@" $NGINX_INSTALL_DIR/conf/nginx.conf
-sed -i "s@/home/wwwlogs@$WWWLOGS_DIR@g" $NGINX_INSTALL_DIR/conf/nginx.conf
-sed -i "s@^user www www@user $RUN_USER $RUN_USER@" $NGINX_INSTALL_DIR/conf/nginx.conf
+sed -i "s@/home/wwwroot/default@$WWWROOT_DIR/default@" ${NGINX_INSTALL_DIR}/conf/nginx.conf
+sed -i "s@/home/wwwlogs@$WWWLOGS_DIR@g" ${NGINX_INSTALL_DIR}/conf/nginx.conf
+sed -i "s@^user www www@user $RUN_USER $RUN_USER@" ${NGINX_INSTALL_DIR}/conf/nginx.conf
 
 # logrotate nginx log
 cat > /etc/logrotate.d/nginx << EOF
