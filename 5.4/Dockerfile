@@ -13,7 +13,29 @@ ENV NGINX_INSTALL_DIR=/usr/local/nginx \
 WORKDIR /tmp
 
 # install nginx
-RUN apt-get install -y  bzip2 && \
+RUN buildDeps='\
+                gcc \
+                g++ \
+                make \
+                cmake \
+                autoconf \
+                libssl-dev \
+                libcurl4-openssl-dev \
+                libxslt-dev \
+                libicu-dev \
+                libxml2-dev \
+                libjpeg-dev \
+                libpng-dev \
+                libfreetype6-dev \
+                libsasl2-dev \
+                libevent-dev \
+                libpcre3-dev \
+                libgpgme11-dev \
+                pkg-config \
+                patch \
+                libgpgme11-dev \
+                --no-install-recommends ' \
+        && apt-get update && apt-get install -y ${buildDeps} && rm -rf /var/lib/apt/lists/* && \
     wget http://mirrors.linuxeye.com/oneinstack/src/jemalloc-4.4.0.tar.bz2 && \
     tar -xjf jemalloc-4.4.0.tar.bz2 && \
     cd jemalloc-4.4.0 && \
@@ -52,9 +74,9 @@ RUN  wget -c --no-check-certificate ftp://ftp.csx.cam.ac.uk/pub/software/program
     make && make install && \
     mkdir -p ${NGINX_INSTALL_DIR}/conf/rewrite && \
     touch ${NGINX_INSTALL_DIR}/conf/rewrite/none.conf && \
-    rm -rf /tmp/* && \
-    apt-get remove -y bzip2 && \
-    apt-get autoremove -y
+    cd /tmp/ && rm -rf /tmp/* && \
+    #remove build deps
+    apt-get purge -y --auto-remove ${buildDeps}
 
 ADD nginx.conf ${NGINX_INSTALL_DIR}/conf/nginx.conf
 ADD nginx-init /etc/init.d/nginx
