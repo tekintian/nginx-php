@@ -1,11 +1,11 @@
-FROM tekintian/php:7.0.28
+FROM tekintian/php:7.0.29
 MAINTAINER Tekin Tian <tekintian@gmail.com>
 
 
 ENV NGINX_INSTALL_DIR=/usr/local/nginx \
-    NGINX_VERSION=1.13.9 \
-    PCRE_VERSION=8.41 \
-    OPENSSL_VERSION=1.1.0g \
+    NGINX_VERSION=1.13.10 \
+    PCRE_VERSION=8.42 \
+    OPENSSL_VERSION=1.1.0h \
     RUN_USER=www \
     WWWROOT_DIR=/home/wwwroot \
     WWWLOGS_DIR=/home/wwwlogs \

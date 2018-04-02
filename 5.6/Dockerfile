@@ -1,9 +1,9 @@
-FROM tekintian/php:5.6.34
+FROM tekintian/php:5.6.35
 MAINTAINER Tekin Tian <tekintian@gmail.com>
 
 ENV NGINX_INSTALL_DIR=/usr/local/nginx \
-    NGINX_VERSION=1.13.9 \
-    PCRE_VERSION=8.41 \
+    NGINX_VERSION=1.13.10 \
+    PCRE_VERSION=8.42 \
     OPENSSL_VERSION=1.0.2n \
     RUN_USER=www \
     WWWROOT_DIR=/home/wwwroot \

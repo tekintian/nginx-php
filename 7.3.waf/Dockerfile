@@ -1,6 +1,5 @@
-FROM tekintian/php:7.0.29
+FROM tekintian/php:7.3-build20180402
 MAINTAINER Tekin Tian <tekintian@gmail.com>
-
 
 ENV NGINX_INSTALL_DIR=/usr/local/nginx \
     NGINX_VERSION=1.13.10 \
