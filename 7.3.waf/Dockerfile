@@ -1,4 +1,4 @@
-FROM tekintian/php:7.3-build20180402
+FROM tekintian/php:7.3-dev-build20180405
 MAINTAINER Tekin Tian <tekintian@gmail.com>
 
 ENV NGINX_INSTALL_DIR=/usr/local/nginx \
