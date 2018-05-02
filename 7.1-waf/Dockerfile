@@ -1,4 +1,4 @@
-FROM tekintian/php:7.1.16
+FROM tekintian/php:7.1.17
 MAINTAINER Tekin Tian <tekintian@gmail.com>
 
 ENV NGINX_INSTALL_DIR=/usr/local/nginx \
