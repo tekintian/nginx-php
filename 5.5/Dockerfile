@@ -4,7 +4,7 @@ MAINTAINER Tekin Tian <tekintian@gmail.com>
 ENV NGINX_INSTALL_DIR=/usr/local/nginx \
     NGINX_VERSION=1.13.10 \
     PCRE_VERSION=8.42 \
-    OPENSSL_VERSION=1.0.2n \
+    OPENSSL_VERSION=1.0.2o \
     RUN_USER=www \
     WWWROOT_DIR=/home/wwwroot \
     WWWLOGS_DIR=/home/wwwlogs \
