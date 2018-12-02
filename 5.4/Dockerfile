@@ -1,8 +1,8 @@
 FROM tekintian/php:5.4.45
-MAINTAINER Tekin Tian <tekintian@gmail.com>
+LABEL maintainer="TekinTian tekintian@gmail.com"
 
 ENV NGINX_INSTALL_DIR=/usr/local/nginx \
-    NGINX_VERSION=1.13.10 \
+    NGINX_VERSION=1.15.7 \
     PCRE_VERSION=8.42 \
     OPENSSL_VERSION=1.0.2o \
     RUN_USER=www \
@@ -46,7 +46,7 @@ RUN buildDeps='\
     echo "/usr/local/lib" > /etc/ld.so.conf.d/usr_local_lib.conf && \
     /sbin/ldconfig 
 
-RUN  wget -c --no-check-certificate ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-${PCRE_VERSION}.tar.gz && \
+RUN  wget -c --no-check-certificate https://ftp.pcre.org/pub/pcre/pcre-${PCRE_VERSION}.tar.gz && \
     wget -c --no-check-certificate https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz && \
     wget -c --no-check-certificate http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz && \
     tar xzf pcre-${PCRE_VERSION}.tar.gz && \

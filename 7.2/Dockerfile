@@ -1,21 +1,21 @@
-FROM tekintian/php:7.2.5
-MAINTAINER Tekin Tian <tekintian@gmail.com>
+FROM tekintian/php:7.2.12
+LABEL maintainer="TekinTian tekintian@gmail.com"
 
 ENV NGINX_INSTALL_DIR=/usr/local/nginx \
-    NGINX_VERSION=1.13.10 \
+    NGINX_VERSION=1.15.7 \
     PCRE_VERSION=8.42 \
-    OPENSSL_VERSION=1.1.0h \
+    OPENSSL_VERSION=1.1.0j \
     RUN_USER=www \
     WWWROOT_DIR=/home/wwwroot \
     WWWLOGS_DIR=/home/wwwlogs \
     REMOTE_SRC_PATH=https://github.com/tekintian/nginx-php/raw/master
 
 WORKDIR /tmp
-#http://nginx.org/download/nginx-1.13.9.tar.gz
+#http://nginx.org/download/nginx-1.15.7.tar.gz
 #最新稳定版本openssl 
-# https://www.openssl.org/source/openssl-1.1.0g.tar.gz
+# https://www.openssl.org/source/openssl-1.1.0j.tar.gz
 #nginx http://nginx.taobao.org/download.html
-#pcre  ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre
+#pcre https://ftp.pcre.org/pub/pcre
 #install build deps
 RUN  buildDeps='\
                 gcc \
@@ -40,7 +40,7 @@ RUN  buildDeps='\
                 libgpgme11-dev \
                 --no-install-recommends ' \
         && apt-get update && apt-get install -y ${buildDeps} && rm -rf /var/lib/apt/lists/* && \
-    wget -c --no-check-certificate ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-${PCRE_VERSION}.tar.gz && \
+    wget -c --no-check-certificate https://ftp.pcre.org/pub/pcre/pcre-${PCRE_VERSION}.tar.gz && \
     wget --no-check-certificate https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz && \
     wget -c --no-check-certificate http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz && \
     #解压
